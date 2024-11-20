@@ -32,12 +32,65 @@ router.get('/', (req, res) => {
     res.json(filteredPosts);
 })
 
+
+
 //show
-router.get('/:slug', (req, res) => {
-    const slug = req.params.slug;
-    const post = posts.find((post) => post.slug === slug);
-    res.json(post);
+router.get('/:id([0-9]+)', (req, res) => {
+
+    // se nel parametro ci sono solo numeri lo considero come id
+    // faccio il parseint per trasfolmarlo in numero
+
+    const id = parseInt(req.params.id);
+    // cerco nel mio array l'oggetto che ha una chiave id = a quel numero
+    // find mi ritorna il primo elemento che soddisfa la callback o undefined
+
+    const post = posts.find((post) => post.id === id);
+
+    let result = post;
+
+    // se post è undefined
+
+    if (!post) {
+        res.status(404);
+        result = {
+            error: 'Post not found',
+            message: `Non è presente nessun elemento con id: ${id}`
+
+        }
+    }
+
+    res.json(result);
 });
+
+
+// se il parametro non è composto solo da numeri
+router.get('/:slug', (req, res) => {
+
+    const slug = req.params.slug;
+
+    const post = posts.find((post) => post.slug === slug);
+
+    let result = post;
+
+    // se ho undefined
+    if (!post) {
+        res.status(404);
+        result = {
+            error: 'Post not found',
+            message: `Non è presente nessun elemento che corrisponde a: ${slug}`
+
+        }
+    }
+    res.json(result);
+
+});
+
+
+
+
+
+
+// http://localhost:3000/posts/pippo
 
 //store
 router.post('/', (req, res) => {

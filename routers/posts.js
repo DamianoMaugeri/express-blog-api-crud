@@ -87,11 +87,6 @@ router.get('/:slug', (req, res) => {
 
 
 
-
-
-
-// http://localhost:3000/posts/pippo
-
 //store
 router.post('/', (req, res) => {
     res.send('creo un nuovo post');
@@ -111,9 +106,46 @@ router.patch('/:slug', (req, res) => {
 });
 
 //destroy
+// se il parametro è composto solo da numeri 
+router.delete('/:id([0-9]+)', (req, res) => {
+    const id = parseInt(req.params.id);
+    const postIndex = posts.findIndex((post) => post.id === id);
+    // il metodo find index mi torna l'indice dell'elemento che soddisfa la mia condizione / -1 in caso in cui nessun elemento soddisfa la condizione
+
+    if (postIndex === -1) {
+        res.status(404);
+        return res.json(
+            {
+                error: 'Post not found',
+                message: `Non è presente nessun elemento con id: ${id}`
+            }
+        )
+    };
+
+    posts.splice(postIndex, 1);
+    res.sendStatus(204);
+
+});
+
+// se il parametro non è composto solo da numeri 
 router.delete('/:slug', (req, res) => {
     const slug = req.params.slug;
-    res.send(`elimino il post ${slug}`);
+
+    const postIndex = posts.findIndex((post) => post.slug === slug);
+
+    if (postIndex === -1) {
+        res.status(404);
+        return res.json(
+            {
+                error: 'Post not found',
+                message: `Non è presente nessun elemento che corrisponde a: ${slug}`
+            }
+        )
+    };
+
+    posts.splice(postIndex, 1);
+    res.sendStatus(204);
+
 });
 
 

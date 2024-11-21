@@ -108,7 +108,7 @@ const store = (req, res) => {
 
     posts.push(post);
 
-    res.status(201).json(pizza)
+    res.status(201).json(post)
 
 
 

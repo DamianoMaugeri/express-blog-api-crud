@@ -29,7 +29,7 @@ router.put('/:id([0-9]+)', postController.update);
 router.put('/:slug', postController.update);
 
 //modify
-router.patch('/:slug', postController.modify);
+router.patch('/:id([0-9]+)', postController.modify);
 
 //destroy
 // se il parametro è composto solo da numeri 

@@ -88,7 +88,18 @@ const showConSlug = (req, res) => {
 
 const store = (req, res) => {
 
-    // controllo i dati in entrata , voglio come dati title,content,image,tags
+    // controllo i dati in entrata , voglio come dati title,content,image,tags 
+    const errors = validazioneTuttiICampi(req);
+
+    if (errors.length > 0) {
+
+        res.status(400);
+        return res.json({
+            error: 'ivalid request',
+            message: errors
+        });
+
+    };
 
     // se sono corretti 
 
@@ -143,17 +154,25 @@ const update = (req, res) => {
         }
     }
 
-    // se ho trovato il post 
-
-    const { title, content, image, tags } = req.body;
-
-
-
+    // se ho trovato il post
     //verifico che tutti i parametri siano presenti 
 
+    const errors = validazioneTuttiICampi(req);
+
+    if (errors.length > 0) {
+
+        res.status(400);
+        return res.json({
+            error: 'ivalid request',
+            message: errors
+        });
+
+    };
 
 
     // aggiorno il post 
+
+    const { title, content, image, tags } = req.body;
     const slug = title.split(' ').join('-').toLowerCase();
 
     post.title = title;
@@ -272,3 +291,31 @@ const destroyConSlug = (req, res) => {
 
 
 module.exports = { index, showConId, showConSlug, store, update, modify, destroyConId, destroyConSlug }
+
+
+function validazioneTuttiICampi(req) {
+    const { title, content, image, tags } = req.body;
+
+    const errors = []
+
+
+    if (!title) {
+        errors.push('title is required')
+    }
+
+    if (!content) {
+        errors.push('content is reqired')
+    }
+
+    if (!image) {
+        errors.push('Image is required')
+    }
+
+    if (!tags) {
+        errors.push('tags is required')
+    }
+
+    return errors
+
+
+}

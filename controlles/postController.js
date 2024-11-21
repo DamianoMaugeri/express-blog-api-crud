@@ -147,12 +147,12 @@ const update = (req, res) => {
 
     if (!post) {
         res.status(404);
-        result = {
+        return res.json({
             error: 'Post not found',
             message: `Non è presente nessun elemento con id: ${id}`
 
-        }
-    }
+        });
+    };
 
     // se ho trovato il post
     //verifico che tutti i parametri siano presenti 
@@ -190,6 +190,59 @@ const update = (req, res) => {
 
 
 };
+//-------------------------------------------------------------------------------------------
+
+const updateSlug = (req, res) => {
+
+    let slug = req.params.slug;
+
+    const post = posts.find((post) => post.slug === slug);
+
+    // se ho undefined
+    if (!post) {
+        res.status(404);
+        return res.json({
+            error: 'Post not found',
+            message: `Non è presente nessun elemento che corrisponde a: ${slug}`
+
+        });
+    };
+
+    // se ho trovato il post
+    //verifico che tutti i parametri siano presenti 
+
+    const errors = validazioneTuttiICampi(req);
+
+    if (errors.length > 0) {
+
+        res.status(400);
+        return res.json({
+            error: 'ivalid request',
+            message: errors
+        });
+
+    };
+
+
+    // aggiorno il post 
+
+    const { title, content, image, tags } = req.body;
+
+    slug = title.split(' ').join('-').toLowerCase();
+
+    post.title = title;
+    post.slug = slug;
+    post.content = content;
+    post.image = image;
+    post.tags = tags;
+
+    res.json(post)
+
+}
+
+
+
+
 
 
 
@@ -205,38 +258,47 @@ const modify = (req, res) => {
     // cerco nel mio array l'oggetto che ha una chiave id = a quel numero
     // find mi ritorna il primo elemento che soddisfa la callback o undefined
 
-    const post = posts.find((post) => post.id === id);
+    let post = posts.find((post) => post.id === id);
 
     // se post è undefined
 
     if (!post) {
         res.status(404);
-        result = {
+        return res.json({
             error: 'Post not found',
             message: `Non è presente nessun elemento con id: ${id}`
 
-        }
+        })
     }
 
     // se ho trovato il post 
+    let slug
+    post = modifypost(post, req);
 
-    const { title, content, image, tags } = req.body;
 
+    res.json(post);
 
-    // se ho valori che non sono undefined modifico il mio post
+};
 
-    if (title) {
-        post.title = title;
-        const slug = title.split(' ').join('-').toLowerCase();
-        post.slug = slug;
+//---------------------------------------------------------------------------------------------------------------------------------------------
 
-    } else if (content) {
-        post.content = content;
-    } else if (image) {
-        post.image = image;
-    } else if (tags) {
-        post.tags = tags;
-    }
+const modifySlug = (req, res) => {
+
+    let slug = req.params.slug;
+
+    let post = posts.find((post) => post.slug === slug);
+
+    // se ho undefined
+    if (!post) {
+        res.status(404);
+        return res.json({
+            error: 'Post not found',
+            message: `Non è presente nessun elemento che corrisponde a: ${slug}`
+
+        });
+    };
+
+    post = modifypost(post, req);
 
     res.json(post);
 
@@ -290,7 +352,16 @@ const destroyConSlug = (req, res) => {
 };
 
 
-module.exports = { index, showConId, showConSlug, store, update, modify, destroyConId, destroyConSlug }
+module.exports = { index, showConId, showConSlug, store, update, updateSlug, modify, modifySlug, destroyConId, destroyConSlug }
+
+
+
+
+
+
+
+
+
 
 
 function validazioneTuttiICampi(req) {
@@ -318,4 +389,31 @@ function validazioneTuttiICampi(req) {
     return errors
 
 
-}
+};
+
+
+function modifypost(post, req) {
+    const { title, content, image, tags } = req.body;
+
+
+    // se ho valori che non sono undefined modifico il mio post
+
+    if (title) {
+        post.title = title;
+        slug = title.split(' ').join('-').toLowerCase();
+        post.slug = slug;
+
+    };
+    if (content) {
+        post.content = content;
+    };
+    if (image) {
+        post.image = image;
+    };
+    if (tags) {
+        post.tags = tags;
+    };
+
+    return post
+
+};

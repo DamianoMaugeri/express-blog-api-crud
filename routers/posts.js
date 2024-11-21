@@ -26,10 +26,11 @@ router.post('/', postController.store);
 
 //update
 router.put('/:id([0-9]+)', postController.update);
-router.put('/:slug', postController.update);
+router.put('/:slug', postController.updateSlug);
 
 //modify
 router.patch('/:id([0-9]+)', postController.modify);
+router.patch('/:slug', postController.modifySlug);
 
 //destroy
 // se il parametro è composto solo da numeri 

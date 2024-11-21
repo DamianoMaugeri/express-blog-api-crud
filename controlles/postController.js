@@ -87,7 +87,6 @@ const showConSlug = (req, res) => {
 //================================================================  STORE  =============================================================
 
 const store = (req, res) => {
-    res.send('creo un nuovo post');
 
     // controllo i dati in entrata , voglio come dati title,content,image,tags
 

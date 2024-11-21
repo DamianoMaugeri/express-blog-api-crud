@@ -13,12 +13,7 @@ router.get('/', postController.index);
 
 //show
 router.get('/:id([0-9]+)', postController.showConId);
-
-
-// se il parametro non è composto solo da numeri
 router.get('/:slug', postController.showConSlug);
-
-
 
 //store
 router.post('/', postController.store);
@@ -33,10 +28,7 @@ router.patch('/:id([0-9]+)', postController.modify);
 router.patch('/:slug', postController.modifySlug);
 
 //destroy
-// se il parametro è composto solo da numeri 
-router.delete('/:id([0-9]+)', postController.destroyConId)
-
-// se il parametro non è composto solo da numeri 
+router.delete('/:id([0-9]+)', postController.destroyConId);
 router.delete('/:slug', postController.destroyConSlug);
 
 module.exports = router

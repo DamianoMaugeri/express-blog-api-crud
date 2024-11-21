@@ -178,8 +178,50 @@ const update = (req, res) => {
 //================================================================  MODIFY  ============================================================
 
 const modify = (req, res) => {
-    const slug = req.params.slug;
-    res.send(`modifico il post ${slug}`);
+
+
+    // se nel parametro ci sono solo numeri lo considero come id
+    // faccio il parseint per trasfolmarlo in numero
+
+    const id = parseInt(req.params.id);
+    // cerco nel mio array l'oggetto che ha una chiave id = a quel numero
+    // find mi ritorna il primo elemento che soddisfa la callback o undefined
+
+    const post = posts.find((post) => post.id === id);
+
+    // se post è undefined
+
+    if (!post) {
+        res.status(404);
+        result = {
+            error: 'Post not found',
+            message: `Non è presente nessun elemento con id: ${id}`
+
+        }
+    }
+
+    // se ho trovato il post 
+
+    const { title, content, image, tags } = req.body;
+
+
+    // se ho valori che non sono undefined modifico il mio post
+
+    if (title) {
+        post.title = title;
+        const slug = title.split(' ').join('-').toLowerCase();
+        post.slug = slug;
+
+    } else if (content) {
+        post.content = content;
+    } else if (image) {
+        post.image = image;
+    } else if (tags) {
+        post.tags = tags;
+    }
+
+    res.json(post);
+
 };
 
 

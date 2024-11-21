@@ -123,8 +123,54 @@ const store = (req, res) => {
 //================================================================  UPDATE  ============================================================
 
 const update = (req, res) => {
-    const slug = req.params.slug;
-    res.send(`aggiorno il post ${slug}`);
+
+    // se nel parametro ci sono solo numeri lo considero come id
+    // faccio il parseint per trasfolmarlo in numero
+
+    const id = parseInt(req.params.id);
+    // cerco nel mio array l'oggetto che ha una chiave id = a quel numero
+    // find mi ritorna il primo elemento che soddisfa la callback o undefined
+
+    const post = posts.find((post) => post.id === id);
+
+    // se post è undefined
+
+    if (!post) {
+        res.status(404);
+        result = {
+            error: 'Post not found',
+            message: `Non è presente nessun elemento con id: ${id}`
+
+        }
+    }
+
+    // se ho trovato il post 
+
+    const { title, content, image, tags } = req.body;
+
+
+
+    //verifico che tutti i parametri siano presenti 
+
+
+
+    // aggiorno il post 
+    const slug = title.split(' ').join('-').toLowerCase();
+
+    post.title = title;
+    post.slug = slug;
+    post.content = content;
+    post.image = image;
+    post.tags = tags;
+
+    res.json(post)
+
+
+
+
+
+
+
 };
 
 

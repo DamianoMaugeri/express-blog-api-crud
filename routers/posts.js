@@ -25,6 +25,7 @@ router.post('/', postController.store);
 
 
 //update
+router.put('/:id([0-9]+)', postController.update);
 router.put('/:slug', postController.update);
 
 //modify

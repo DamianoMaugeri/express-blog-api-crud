@@ -1,5 +1,9 @@
 const posts = require('../data/posts.js')
 
+// controllo l'ultimo id 
+let lastid = posts.sort((a, b) => a.id - b.id).at(-1).id
+
+
 
 //================================================================= INDEX  ===============================================================
 
@@ -84,6 +88,7 @@ const showConSlug = (req, res) => {
 
 const store = (req, res) => {
     res.send('creo un nuovo post');
+
 };
 
 

@@ -8,6 +8,8 @@ const postsRouter = require('./routers/posts.js');
 
 app.use(express.static('public'));
 
+app.use(express.json());
+
 app.get('/', (req, res) => {
     res.send('home del server');
 });

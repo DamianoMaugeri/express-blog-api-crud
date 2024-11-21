@@ -89,6 +89,32 @@ const showConSlug = (req, res) => {
 const store = (req, res) => {
     res.send('creo un nuovo post');
 
+    // controllo i dati in entrata , voglio come dati title,content,image,tags
+
+    // se sono corretti 
+
+    const { title, content, image, tags } = req.body;
+
+    lastid++;
+    const slug = title.split(' ').join('-').toLowerCase();
+
+    const post = {
+        id: lastid,
+        title,
+        slug,
+        content,
+        image,
+        tags
+    };
+
+    posts.push(post);
+
+    res.status(201).json(pizza)
+
+
+
+
+
 };
 
 

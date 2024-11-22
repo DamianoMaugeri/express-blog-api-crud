@@ -6,7 +6,48 @@ const posts = require('../data/posts');
 
 const postController = require('../controlles/postController.js')
 
+
+
+// gestisco la ricerca con un middleware
+router.param('id', (req, res, next, id) => {
+
+    const post = posts.find((post) => post.id === parseInt(req.params.id));
+    console.log(post)
+
+    if (post) {
+        req.post = post;
+        next();
+    } else {
+        res.status(404)
+        res.json({
+            from: 'middleware param',
+            error: 'Post not found',
+            message: 'Il post non è stata trovato.',
+        })
+    }
+
+});
+
+router.param('slug', (req, res, next, slug) => {
+
+    const post = posts.find((post) => post.slug === slug);
+
+    if (post) {
+        req.post = post;
+        next();
+    } else {
+        res.status(404)
+        res.json({
+            from: 'middleware param',
+            error: 'Post not found',
+            message: 'Il post non è stata trovato.',
+        })
+    }
+
+});
+
 // creo le crud su post
+
 
 //index
 router.get('/', postController.index);

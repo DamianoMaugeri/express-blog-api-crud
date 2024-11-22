@@ -40,48 +40,47 @@ const showConId = (req, res) => {
     // se nel parametro ci sono solo numeri lo considero come id
     // faccio il parseint per trasfolmarlo in numero
 
-    const id = parseInt(req.params.id);
+    //const id = parseInt(req.params.id);
     // cerco nel mio array l'oggetto che ha una chiave id = a quel numero
     // find mi ritorna il primo elemento che soddisfa la callback o undefined
 
-    const post = posts.find((post) => post.id === id);
+    //const post = posts.find((post) => post.id === id);
 
-    let result = post;
+    // let result = post;
 
     // se post è undefined
 
-    if (!post) {
-        res.status(404);
-        result = {
-            error: 'Post not found',
-            message: `Non è presente nessun elemento con id: ${id}`
+    // if (!post) {
+    //     res.status(404);
+    //     result = {
+    //         error: 'Post not found',
+    //         message: `Non è presente nessun elemento con id: ${id}`
 
-        }
-    }
-
-    res.json(result);
+    //     }
+    // }
+    res.json(req.post);
 };
 
 //-----------------------------------------------------------------------
 
 const showConSlug = (req, res) => {
 
-    const slug = req.params.slug;
+    // const slug = req.params.slug;
 
-    const post = posts.find((post) => post.slug === slug);
+    // const post = posts.find((post) => post.slug === slug);
 
-    let result = post;
+    // let result = post;
 
-    // se ho undefined
-    if (!post) {
-        res.status(404);
-        result = {
-            error: 'Post not found',
-            message: `Non è presente nessun elemento che corrisponde a: ${slug}`
+    // // se ho undefined
+    // if (!post) {
+    //     res.status(404);
+    //     result = {
+    //         error: 'Post not found',
+    //         message: `Non è presente nessun elemento che corrisponde a: ${slug}`
 
-        }
-    }
-    res.json(result);
+    //     }
+    // }
+    res.json(req.post);
 
 };
 //================================================================  STORE  =============================================================
@@ -106,7 +105,7 @@ const store = (req, res) => {
     const { title, content, image, tags } = req.body;
 
     lastid++;
-    const slug = title.split(' ').join('-').toLowerCase();
+    const slug = title.toLowerCase().trim().split(' ').join('-');
 
     const post = {
         id: lastid,
@@ -137,25 +136,26 @@ const update = (req, res) => {
     // se nel parametro ci sono solo numeri lo considero come id
     // faccio il parseint per trasfolmarlo in numero
 
-    const id = parseInt(req.params.id);
+    // const id = parseInt(req.params.id);
     // cerco nel mio array l'oggetto che ha una chiave id = a quel numero
     // find mi ritorna il primo elemento che soddisfa la callback o undefined
 
-    const post = posts.find((post) => post.id === id);
+    //const post = posts.find((post) => post.id === id);
 
     // se post è undefined
 
-    if (!post) {
-        res.status(404);
-        return res.json({
-            error: 'Post not found',
-            message: `Non è presente nessun elemento con id: ${id}`
+    // if (!post) {
+    //     res.status(404);
+    //     return res.json({
+    //         error: 'Post not found',
+    //         message: `Non è presente nessun elemento con id: ${id}`
 
-        });
-    };
+    //     });
+    // };
 
     // se ho trovato il post
     //verifico che tutti i parametri siano presenti 
+    const post = req.post;
 
     const errors = validazioneTuttiICampi(req);
 
@@ -173,7 +173,7 @@ const update = (req, res) => {
     // aggiorno il post 
 
     const { title, content, image, tags } = req.body;
-    const slug = title.split(' ').join('-').toLowerCase();
+    const slug = title.toLowerCase().trim().split(' ').join('-');
 
     post.title = title;
     post.slug = slug;
@@ -228,7 +228,7 @@ const updateSlug = (req, res) => {
 
     const { title, content, image, tags } = req.body;
 
-    slug = title.split(' ').join('-').toLowerCase();
+    slug = title.toLowerCase().trim().split(' ').join('-');
 
     post.title = title;
     post.slug = slug;
@@ -272,7 +272,6 @@ const modify = (req, res) => {
     }
 
     // se ho trovato il post 
-    let slug
     post = modifypost(post, req);
 
 
@@ -362,8 +361,6 @@ module.exports = { index, showConId, showConSlug, store, update, updateSlug, mod
 
 
 
-
-
 function validazioneTuttiICampi(req) {
     const { title, content, image, tags } = req.body;
 
@@ -374,7 +371,7 @@ function validazioneTuttiICampi(req) {
         errors.push('title is required')
     }
 
-    if (!content) {
+    if (!content && content.length >= 1000) {
         errors.push('content is reqired')
     }
 
@@ -394,13 +391,13 @@ function validazioneTuttiICampi(req) {
 
 function modifypost(post, req) {
     const { title, content, image, tags } = req.body;
-
+    let slug;
 
     // se ho valori che non sono undefined modifico il mio post
 
     if (title) {
         post.title = title;
-        slug = title.split(' ').join('-').toLowerCase();
+        slug = title.toLowerCase().trim().split(' ').join('-');
         post.slug = slug;
 
     };

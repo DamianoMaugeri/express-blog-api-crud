@@ -22,7 +22,7 @@ router.param('id', (req, res, next, id) => {
         res.json({
             from: 'middleware param',
             error: 'Post not found',
-            message: 'Il post non è stata trovato.',
+            message: 'Il post non è stato trovato.',
         })
     }
 
@@ -40,7 +40,7 @@ router.param('slug', (req, res, next, slug) => {
         res.json({
             from: 'middleware param',
             error: 'Post not found',
-            message: 'Il post non è stata trovato.',
+            message: 'Il post non è stato trovato.',
         })
     }
 

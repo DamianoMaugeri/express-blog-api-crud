@@ -172,7 +172,7 @@ const update = (req, res) => {
 
     // aggiorno il post 
 
-    const { title, content, image, tags } = req.body;
+    const { title, content, image, tags, author, isPublished } = req.body;
     const slug = title.toLowerCase().trim().split(' ').join('-');
 
     post.title = title;
@@ -180,6 +180,8 @@ const update = (req, res) => {
     post.content = content;
     post.image = image;
     post.tags = tags;
+    post.author = author;
+    post.isPublished = isPublished;
 
     res.json(post)
 

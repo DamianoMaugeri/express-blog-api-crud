@@ -11,7 +11,7 @@ const postController = require('../controlles/postController.js')
 // gestisco la ricerca con un middleware
 router.param('id', (req, res, next, id) => {
 
-    const post = posts.find((post) => post.id === parseInt(req.params.id));
+    const post = posts.find((post) => post.id === parseInt(id));
     console.log(post)
 
     if (post) {
@@ -23,9 +23,10 @@ router.param('id', (req, res, next, id) => {
             from: 'middleware param',
             error: 'Post not found',
             message: 'Il post non è stato trovato.',
-        })
-    }
 
+        })
+        // next();
+    }
 });
 
 router.param('slug', (req, res, next, slug) => {

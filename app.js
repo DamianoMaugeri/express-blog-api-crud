@@ -10,11 +10,13 @@ const notFound = require('./middlewares/notFound.js');
 
 const errorsmiddleware = require('./middlewares/errorMiddleware.js')
 
+const cors = require('cors')
 
 
 
 
 
+app.use(cors())
 app.use(express.static('public'));
 
 app.use(express.json());

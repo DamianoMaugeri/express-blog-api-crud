@@ -309,9 +309,9 @@ const modifySlug = (req, res) => {
 //================================================================  DESTROY ============================================================
 
 const destroyConId = (req, res) => {
-    const slug = req.params.slug;
+    const id = parseInt(req.params.id);
 
-    const postIndex = posts.findIndex((post) => post.slug === slug);
+    const postIndex = posts.findIndex((post) => post.id === id);
 
     if (postIndex === -1) {
         res.status(404);

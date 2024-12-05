@@ -102,7 +102,7 @@ const store = (req, res) => {
 
     // se sono corretti 
 
-    const { title, content, image, tags } = req.body;
+    const { title, content, image, tags, author } = req.body;
 
     lastid++;
     const slug = title.toLowerCase().trim().split(' ').join('-');
@@ -113,7 +113,8 @@ const store = (req, res) => {
         slug,
         content,
         image,
-        tags
+        tags,
+        author
     };
 
     posts.push(post);
@@ -228,7 +229,7 @@ const updateSlug = (req, res) => {
 
     // aggiorno il post 
 
-    const { title, content, image, tags } = req.body;
+    const { title, content, image, tags, author } = req.body;
 
     slug = title.toLowerCase().trim().split(' ').join('-');
 
@@ -237,6 +238,7 @@ const updateSlug = (req, res) => {
     post.content = content;
     post.image = image;
     post.tags = tags;
+    post.author = author;
 
     res.json(post)
 
@@ -364,7 +366,7 @@ module.exports = { index, showConId, showConSlug, store, update, updateSlug, mod
 
 
 function validazioneTuttiICampi(req) {
-    const { title, content, image, tags } = req.body;
+    const { title, content, image = '', tags } = req.body;
 
     const errors = []
 
@@ -377,9 +379,9 @@ function validazioneTuttiICampi(req) {
         errors.push('content is reqired')
     }
 
-    if (!image) {
-        errors.push('Image is required')
-    }
+    // if (!image) {
+    //     errors.push('Image is required')
+    // }
 
     if (!tags) {
         errors.push('tags is required')

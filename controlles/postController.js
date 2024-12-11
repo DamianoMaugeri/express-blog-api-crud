@@ -58,7 +58,7 @@ const showConId = (req, res) => {
 
     //     }
     // }
-    res.json(req.post);
+    res.json({ ...req.post, nextId: req.next ? req.next.id : null, prevId: req.prev ? req.prev.id : null });
 };
 
 //-----------------------------------------------------------------------

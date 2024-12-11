@@ -6,6 +6,8 @@ const port = 3000;
 
 const postsRouter = require('./routers/posts.js');
 
+const descriptionRouter = require('./routers/description.js')
+
 const notFound = require('./middlewares/notFound.js');
 
 const errorsmiddleware = require('./middlewares/errorMiddleware.js')
@@ -29,6 +31,7 @@ app.get('/', (req, res) => {
 
 //rotte
 app.use('/posts', postsRouter);
+app.use('/description', descriptionRouter)
 
 
 // middlewares finali
